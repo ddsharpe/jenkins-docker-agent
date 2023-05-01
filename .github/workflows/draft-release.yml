@@ -15,12 +15,12 @@ jobs:
         run: |
           mvn -B clean package
       - id: version
-        run: echo "::set-output name=number::`echo "${{ github.ref }}" | sed 's/.*\/release-//'`"
+        run: echo "::set-output name=number::`echo "${{ github.ref_name }}" | sed 's/release-//'`"
       - id: release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release create ${{ github.ref }} \
+          gh release create ${{ github.ref_name }} \
           --draft \
           --generate-notes \
           --title 'My Project ${{ steps.version.outputs.number }}' \
