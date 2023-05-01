@@ -1,5 +1,10 @@
+name: Build Installer
+run-name: Building push to main by @${{ github.actor }}
+
 on:
-  push
+  push:
+    branches:
+      - 'main'
 
 jobs:
   build:
@@ -7,4 +12,4 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: |
-          mvn clean package
+          mvn -B clean package
