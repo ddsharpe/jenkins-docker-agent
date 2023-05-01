@@ -3,7 +3,7 @@ name: Draft Release
 on:
   push:
     tags:
-      - 'v*'
+      - 'release-*'
 
 jobs:
   build_job:
@@ -14,12 +14,14 @@ jobs:
       - id: compile
         run: |
           mvn -B clean package
+      - id: version
+        run: echo "::set-output name=number::`echo "${{ github.ref }}" | sed 's/.*\/release-//'`"
       - id: release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release create ${GITHUB_REF#refs\/tags\/v} \
+          gh release create ${{ github.ref }} \
           --draft \
           --generate-notes \
-          --title 'My Project ${{ github.ref }}' \
+          --title 'My Project ${{ steps.version.outputs.number }}' \
           target/*.jar
