@@ -1,5 +1,4 @@
 name: Build Installer
-run-name: Building push to main by @${{ github.actor }}
 
 on:
   push:
@@ -7,9 +6,11 @@ on:
       - 'main'
 
 jobs:
-  build:
+  build_job:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - run: |
+      - id: checkout
+        uses: actions/checkout@v3
+      - id: compile
+        run: |
           mvn -B clean package
